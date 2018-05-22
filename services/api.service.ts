@@ -355,10 +355,6 @@ export class APIService {
         return this.buildAbsoluteUrl('projects/' + projectId + '/upload-sites/');
     }
 
-    public getRecordExportURL(): string {
-        return this.buildAbsoluteUrl('records/?output=xlsx&', false);
-    }
-
     public getInferDatasetURL(): string {
         return this.buildAbsoluteUrl('utils/infer-dataset/');
     }
@@ -381,6 +377,36 @@ export class APIService {
             }
         )
         .pipe(
+            catchError((err, caught) => this.handleError(err, caught))
+        );
+    }
+
+    public exportRecords(startDate?: Date, endDate?: Date, speciesName?: string, datasetId?: number,
+                         format: string = 'csv') {
+        let params = {
+            output: format
+        };
+
+        if (startDate) {
+            params['record__datetime__start'] = startDate.toISOString();
+        }
+
+        if (endDate) {
+            params['record__datetime__end'] = endDate.toISOString();
+        }
+
+        if (speciesName) {
+            params['record__species_name'] = speciesName;
+        }
+
+        if (datasetId) {
+            params['dataset__id'] = datasetId;
+        }
+
+        return this.httpClient.get(this.buildAbsoluteUrl('records/'), {
+            responseType: 'blob',
+            params: params
+        }).pipe(
             catchError((err, caught) => this.handleError(err, caught))
         );
     }
