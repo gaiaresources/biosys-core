@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { APIError, User, Project, Dataset, Site, Record, Statistic, ModelChoice }
-    from '../interfaces/api.interfaces';
-import { environment } from '../../../environments/environment';
+import { APIError, User, Project, Dataset, Site, Record, Statistic, ModelChoice } from '../interfaces/api.interfaces';
+import { environment } from '../../environments/environment';
 
 /**
  * This class provides the Biosys API service.
