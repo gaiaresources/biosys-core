@@ -58,7 +58,7 @@ export interface Record {
     id?: number;
     dataset?: number;
     site?: number | null;
-    source_info: {[key: string]: string | number};
+    source_info?: {[key: string]: string | number};
     last_modified?: string;
     created?: string;
     data?: {[key: string]: any} | null;
