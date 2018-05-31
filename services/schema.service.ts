@@ -17,7 +17,7 @@ export class SchemaService {
 
     private static schemaFieldTypeToFormFieldType(field: Field): string {
         if (field.type === 'string') {
-            if (field.hasOwnProperty('constraints') && field.constraints.hasOwnProperty('enum')) {
+            if ('constraints' in field && 'enum' in field.constraints) {
                 return 'select';
             } else {
                 return 'text';
