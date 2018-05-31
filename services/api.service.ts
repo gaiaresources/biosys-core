@@ -271,7 +271,19 @@ export class APIService {
         );
     }
 
-    public updateRecordDataField(id: number, data: any, strict = false): Observable<Record> {
+    public updateRecordPublished(id: number, published: boolean, strict = false): Observable<Record> {
+        // strict is evaluated to true on the server if the parameter is passed with any value
+        const params = strict ? {strict: 'true'} : {};
+
+        return this.httpClient.patch(this.buildAbsoluteUrl('records/' + id), {published: published}, {
+            params: params
+        })
+        .pipe(
+            catchError((err, caught) => this.handleError(err, caught))
+        );
+    }
+
+    public updateRecordDataField(id: number, data: object, strict = false): Observable<Record> {
         // strict is evaluated to true on the server if the parameter is passed with any value
         const params = strict ? {strict: 'true'} : {};
 
