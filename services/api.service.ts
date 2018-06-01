@@ -395,7 +395,7 @@ export class APIService {
         }
 
         if (speciesName) {
-            params['record__species_name'] = speciesName;
+            params['species_name'] = speciesName;
         }
 
         if (datasetId) {
