@@ -387,11 +387,11 @@ export class APIService {
         };
 
         if (startDate) {
-            params['record__datetime__start'] = startDate.toISOString();
+            params['datetime__gte'] = startDate.toISOString();
         }
 
         if (endDate) {
-            params['record__datetime__end'] = endDate.toISOString();
+            params['datetime__lte'] = endDate.toISOString();
         }
 
         if (speciesName) {
