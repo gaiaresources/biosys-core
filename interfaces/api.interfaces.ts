@@ -56,6 +56,7 @@ export interface Dataset {
 }
 export interface Record {
     id?: number;
+    client_id?: string;
     dataset?: number;
     site?: number | null;
     source_info?: {[key: string]: string | number};
