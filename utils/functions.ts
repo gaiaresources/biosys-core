@@ -7,9 +7,9 @@ export function pyDateFormatToAngularDateFormat(pythonDateFormat: string): strin
     let ngDateFormat = pythonDateFormat;
 
     if (!ngDateFormat || ngDateFormat === 'any') {
-            return ANY_ANGULAR_DATE_FORMAT
+        return ANY_ANGULAR_DATE_FORMAT
     } else if (ngDateFormat === 'default') {
-            return ISO_ANGULAR_DATE_FORMAT;
+        return ISO_ANGULAR_DATE_FORMAT;
     }
 
     ngDateFormat = ngDateFormat.replace(/fmt:/, '');

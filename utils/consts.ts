@@ -6,6 +6,8 @@ export let DATASET_TYPE_MAP: any = {
 
 export let ANY_ANGULAR_DATE_FORMAT: string = 'dd/MM/yyyy';
 
+export let ANY_ANGULAR_DATETIME_FORMAT: string = 'dd/MM/yyyy HH:mm';
+
 export let ANY_MOMENT_DATE_FORMAT: string = 'DD/MM/YYYY';
 
 export let ISO_ANGULAR_DATE_FORMAT: string = 'yyyy-MM-dd';
