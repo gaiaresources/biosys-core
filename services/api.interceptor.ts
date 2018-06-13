@@ -10,8 +10,6 @@ export class ApiInterceptor implements HttpInterceptor {
     }
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        req = req.clone({headers: req.headers.set('content-type', 'application/json')});
-
         let authToken = this.authService.getAuthToken();
         if (authToken) {
             req = req.clone({
