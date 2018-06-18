@@ -74,6 +74,8 @@ export interface Record {
     geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
     species_name?: string;
     name_id?: number;
+    parent?: number;
+    children?: number[];
 }
 
 export interface RecordResponse {
