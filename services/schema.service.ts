@@ -9,7 +9,7 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { zip } from 'rxjs/observable/zip';
 import { map } from 'rxjs/operators';
 
-import { FieldDescriptor, FieldOption, FormDescriptor, ObservationFormDescriptor } from '../interfaces/form.interfaces';
+import { FieldDescriptor, FieldOption, FormDescriptor } from '../interfaces/form.interfaces';
 
 @Injectable()
 export class SchemaService {
@@ -52,22 +52,14 @@ export class SchemaService {
     }
 
     private static getFormDescriptorFromDataPackage(dataPackage: DataPackage, resourceIndex: number): FormDescriptor {
-        return {
-            fields: dataPackage.resources[resourceIndex].schema.fields.map((field: Field) =>
-                SchemaService.createFieldDescriptorFromSchemaField(field))
-        };
-    }
-
-    private static getObservationFormDescriptorFromDataPackage(dataPackage: DataPackage, resourceIndex: number):
-            ObservationFormDescriptor {
         const schema: Schema = dataPackage.resources[resourceIndex].schema;
         const fields = schema.fields;
 
-        const ofd: ObservationFormDescriptor = {
-            fields: [],
+        const fd: FormDescriptor = {
             dateFields: [],
             locationFields: [],
             requiredFields: [],
+            optionalFields: [],
             hiddenFields: []
         };
 
@@ -78,19 +70,25 @@ export class SchemaService {
             const fieldOptions = schema.descriptor.fields[i].options;
 
             if (SchemaService.isHiddenField(field)) {
-                ofd.hiddenFields.push(SchemaService.createFieldDescriptorFromSchemaField(field));
+                fd.hiddenFields.push(SchemaService.createFieldDescriptorFromSchemaField(field));
             } else if (SchemaService.isDateField(field)) {
-                ofd.dateFields.push(SchemaService.createFieldDescriptorFromSchemaField(field));
+                fd.dateFields.push(SchemaService.createFieldDescriptorFromSchemaField(field));
             } else if (SchemaService.isLocationField(field)) {
-                ofd.locationFields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
+                fd.locationFields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
             } else if (SchemaService.isRequiredField(field)) {
-                ofd.requiredFields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
+                fd.requiredFields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
             } else {
-                ofd.fields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
+                fd.optionalFields.push(SchemaService.createFieldDescriptorFromSchemaField(field, fieldOptions));
             }
         }
 
-        return ofd;
+        if (schema.primaryKey.length) {
+            fd.keyField = schema.primaryKey[0];
+        } else if (schema.foreignKeys.length) {
+            fd.keyField = schema.foreignKeys[0]['fields'][0];
+        }
+
+        return fd;
     }
 
     private static createFieldDescriptorFromSchemaField(field: Field, fieldOptions?: object): FieldDescriptor {
@@ -146,16 +144,11 @@ export class SchemaService {
     constructor(private formBuilder: FormBuilder) {
     }
 
-    public getFormDescriptorFromDataset(dataset: Dataset, resourceIndex: number = 0):
-            Observable<FormDescriptor|ObservationFormDescriptor> {
+    public getFormDescriptorFromDataset(dataset: Dataset, resourceIndex: number = 0): Observable<FormDescriptor> {
         return fromPromise(Package.load(dataset.data_package)).pipe(
-            map((dataPackage: DataPackage) => {
-                if (dataset.type === 'generic') {
-                    return SchemaService.getFormDescriptorFromDataPackage(dataPackage, resourceIndex);
-                } else {
-                    return SchemaService.getObservationFormDescriptorFromDataPackage(dataPackage, resourceIndex);
-                }
-            })
+            map((dataPackage: DataPackage) =>
+                SchemaService.getFormDescriptorFromDataPackage(dataPackage, resourceIndex)
+            )
         );
     }
 

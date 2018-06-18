@@ -1,12 +1,10 @@
 export interface FormDescriptor {
-    fields: FieldDescriptor[];
-}
-
-export interface ObservationFormDescriptor extends FormDescriptor {
-    dateFields: FieldDescriptor[];
-    locationFields: FieldDescriptor[];
+    dateFields?: FieldDescriptor[];
+    locationFields?: FieldDescriptor[];
     requiredFields?: FieldDescriptor[];
+    optionalFields?: FieldDescriptor[];
     hiddenFields?: FieldDescriptor[];
+    keyField?: string;
 }
 
 export interface FieldDescriptor {
