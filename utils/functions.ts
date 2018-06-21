@@ -53,9 +53,9 @@ export function formatAPIError(error: APIError): object {
     // if it is an error not related to a field it would have the key 'non_field_errors'.
     // use this key as a catch all error.
     if (Array.isArray(errObj)) {
-        errObj = {non_field_errors: errObj}
+        errObj = {non_field_errors: errObj};
     } else if (typeof errObj === 'string') {
-        errObj = {non_field_errors: [errObj]}
+        errObj = {non_field_errors: [errObj]};
     }
     return errObj;
 }

@@ -68,8 +68,8 @@ export interface Record {
     last_modified?: string;
     created?: string;
     data?: { [key: string]: any } | null;
-    published?: boolean,
-    consumed?: boolean,
+    published?: boolean;
+    consumed?: boolean;
     datetime?: string;
     geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
     species_name?: string;
@@ -85,10 +85,10 @@ export interface RecordResponse {
 
 export interface Media {
     id: number;
-    record: number
+    record: number;
     file: string;
     created: string;
-    last_modified: string
+    last_modified: string;
 }
 
 export interface Statistic {

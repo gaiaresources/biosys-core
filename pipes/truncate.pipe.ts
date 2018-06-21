@@ -7,7 +7,7 @@ export class TruncatePipe implements PipeTransform {
             return '';
         }
 
-        let lengthNum = Number(length);
+        const lengthNum = Number(length);
 
         if (value.length > lengthNum) {
             return '<span class="truncated" title="' + value.replace(/(<([^>]+)>)/ig, '') + '">' +

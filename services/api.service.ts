@@ -33,12 +33,12 @@ export class APIService {
     }
 
     private handleError(error: any, caught: Observable<any>) {
-        let apiError: APIError = {
+        const apiError: APIError = {
             status: error.status,
             statusText: error.statusText,
             msg: ''
         };
-        let body = error.error;
+        const body = error.error;
         // the error message is either the body itself or in a 'detail' property
         if ('detail' in body) {
             apiError.msg = body['detail'];
@@ -99,7 +99,7 @@ export class APIService {
     }
 
     public getProjects(custodians?: number[]): Observable<Project[]> {
-        let params: any = {};
+        const params: any = {};
         if (custodians) {
             params['custodians'] = custodians.toString();
         }
@@ -490,7 +490,7 @@ export class APIService {
 
     public exportRecords(startDate?: Date, endDate?: Date, speciesName?: string, datasetId?: number,
                          format: string = 'csv') {
-        let params = {
+        const params = {
             output: format
         };
 
