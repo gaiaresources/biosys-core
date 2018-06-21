@@ -198,6 +198,7 @@ export class APIService {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
         return this.httpClient.request('DELETE', this.buildAbsoluteUrl('projects/' + projectId + '/sites/'),
             {
+                headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: siteIds
             })
             .pipe(
@@ -354,6 +355,7 @@ export class APIService {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
         return this.httpClient.request('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
             {
+                headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: recordIds
             })
             .pipe(
@@ -365,6 +367,7 @@ export class APIService {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
         return this.httpClient.request('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
             {
+                headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: JSON.stringify('all')
             })
             .pipe(
