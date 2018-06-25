@@ -438,7 +438,7 @@ export class APIService {
     }
 
     public getSpecies(search?: string): Observable<any> {
-        let params: any = {};
+        const params: any = {};
         if (search) {
             params['search'] = search;
         }

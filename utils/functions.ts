@@ -1,5 +1,4 @@
-import { ANY_ANGULAR_DATE_FORMAT, ANY_MOMENT_DATE_FORMAT, ISO_ANGULAR_DATE_FORMAT, ISO_MOMENT_DATE_FORMAT }
-    from './consts';
+import { ANY_ANGULAR_DATE_FORMAT, ANY_MOMENT_DATE_FORMAT, ISO_ANGULAR_DATE_FORMAT, ISO_MOMENT_DATE_FORMAT } from './consts';
 
 import { APIError } from '../interfaces/api.interfaces';
 
@@ -7,7 +6,7 @@ export function pyDateFormatToAngularDateFormat(pythonDateFormat: string): strin
     let ngDateFormat = pythonDateFormat;
 
     if (!ngDateFormat || ngDateFormat === 'any') {
-        return ANY_ANGULAR_DATE_FORMAT
+        return ANY_ANGULAR_DATE_FORMAT;
     } else if (ngDateFormat === 'default') {
         return ISO_ANGULAR_DATE_FORMAT;
     }
