@@ -84,8 +84,10 @@ export class APIService {
             );
     }
 
-    public getUsers(): Observable<User[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('users'))
+    public getUsers(params = {}): Observable<User[]> {
+        return this.httpClient.get(this.buildAbsoluteUrl('users'), {
+                params: params
+            })
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
