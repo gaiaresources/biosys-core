@@ -84,11 +84,11 @@ export interface RecordResponse {
 }
 
 export interface Media {
-    id: number;
-    record: number;
-    file: string;
-    created: string;
-    last_modified: string;
+    id?: number;
+    record?: number;
+    file?: string;
+    created?: string;
+    last_modified?: string;
 }
 
 export interface Statistic {
