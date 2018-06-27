@@ -15,7 +15,7 @@ import { FieldDescriptor, FieldOption, FormDescriptor } from '../interfaces/form
 export class SchemaService {
     private static readonly NON_VALIDATED_SCHEMA_CONSTRAINTS = ['unique', 'enum'];
 
-    private static readonly LOCATION_FIELDS = ['datum', 'lat', 'long', 'lon', 'latitude', 'longitude', 'accuracy'];
+    private static readonly LOCATION_FIELDS = ['datum', 'lat', 'long', 'lon', 'latitude', 'longitude', 'accuracy', 'location description'];
 
     private static schemaFieldTypeToFormFieldType(field: Field): string {
         if (field.type === 'string') {
