@@ -19,6 +19,14 @@ export interface User {
     user_permissions?: any[] | null;
 }
 
+export interface Program {
+    id?: number;
+    name: string;
+    code?: string;
+    description?: string;
+    data_engineers?: User[] | null;
+}
+
 export interface Project {
     id?: number;
     name?: string;

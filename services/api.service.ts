@@ -5,13 +5,14 @@ import { map, catchError } from 'rxjs/operators';
 import {
     APIError,
     User,
+    Program,
     Project,
     Dataset,
     Site,
     Record,
     Statistic,
     ModelChoice,
-    Media
+    Media,
 } from '../interfaces/api.interfaces';
 import { environment } from '../../environments/environment';
 
@@ -95,6 +96,54 @@ export class APIService {
 
     public whoAmI(): Observable<User> {
         return this.httpClient.get(this.buildAbsoluteUrl('whoami'))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public getPrograms(custodians?: number[]): Observable<Program[]> {
+        const params: any = {};
+        if (custodians) {
+            params['custodians'] = custodians.toString();
+        }
+
+        return this.httpClient.get(this.buildAbsoluteUrl('programs'), {
+            params: params
+        })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public getProgramById(id: number): Observable<Program> {
+        return this.httpClient.get(this.buildAbsoluteUrl('programs/' + id))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public createProgram(program: Program): Observable<Program> {
+        return this.httpClient.post(this.buildAbsoluteUrl('programs'), program,
+            {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public updateProgram(program: Program): Observable<Program> {
+        return this.httpClient.patch(this.buildAbsoluteUrl('programs/' + program.id), program,
+            {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public deleteProgram(id: number): Observable<Program> {
+        return this.httpClient.delete(this.buildAbsoluteUrl('programs/' + id))
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
