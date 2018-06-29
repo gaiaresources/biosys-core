@@ -7,13 +7,12 @@ export interface APIError {
 export interface User {
     id?: number;
     last_login?: string;
-    is_superuser?: boolean;
     username?: string;
     first_name?: string;
     last_name?: string;
     email?: string;
-    is_staff?: boolean;
-    is_active?: boolean;
+    is_admin?: boolean;
+    is_data_engineer?: boolean;
     date_joined?: string;
     groups?: any[] | null;
     user_permissions?: any[] | null;
@@ -21,7 +20,7 @@ export interface User {
 
 export interface Program {
     id?: number;
-    name: string;
+    name?: string;
     code?: string;
     description?: string;
     data_engineers?: User[] | null;
@@ -31,6 +30,7 @@ export interface Project {
     id?: number;
     name?: string;
     code?: string;
+    program?: number;
     timezone?: string;
     datum?: number | string | null;
     attributes?: { [key: string]: string } | null;
