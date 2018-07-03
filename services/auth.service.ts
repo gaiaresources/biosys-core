@@ -8,7 +8,7 @@ export abstract class AuthService {
 
     public abstract getCurrentUser(): Observable<User>;
 
-    public abstract login(username: string, password: string);
+    public abstract login(username: string, password: string): Observable<User>;
 
     public abstract logout();
 
