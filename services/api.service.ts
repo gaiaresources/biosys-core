@@ -2,18 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import {
-    APIError,
-    User,
-    Program,
-    Project,
-    Dataset,
-    Site,
-    Record,
-    Statistic,
-    ModelChoice,
-    Media,
-} from '../interfaces/api.interfaces';
+import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media }
+    from '../interfaces/api.interfaces';
 import { environment } from '../../environments/environment';
 
 /**
@@ -103,8 +93,8 @@ export class APIService {
 
     public getPrograms(params = {}): Observable<Program[]> {
         return this.httpClient.get(this.buildAbsoluteUrl('programs'), {
-            params: params
-        })
+                params: params
+            })
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
