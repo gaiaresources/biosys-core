@@ -1,6 +1,6 @@
 import { ANY_ANGULAR_DATE_FORMAT, ANY_MOMENT_DATE_FORMAT, ISO_ANGULAR_DATE_FORMAT, ISO_MOMENT_DATE_FORMAT } from './consts';
 
-import { APIError } from '../interfaces/api.interfaces';
+import { APIError, User } from '../interfaces/api.interfaces';
 
 export function pyDateFormatToAngularDateFormat(pythonDateFormat: string): string {
     let ngDateFormat = pythonDateFormat;
@@ -57,4 +57,8 @@ export function formatAPIError(error: APIError): object {
         errObj = {non_field_errors: [errObj]};
     }
     return errObj;
+}
+
+export function formatUserFullName(user: User): string {
+    return `${user.first_name} ${user.last_name}`.trim() || `${user.username}`.trim();
 }

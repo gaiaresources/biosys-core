@@ -2,17 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import {
-    APIError,
-    User,
-    Project,
-    Dataset,
-    Site,
-    Record,
-    Statistic,
-    ModelChoice,
-    Media
-} from '../interfaces/api.interfaces';
+import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media }
+    from '../interfaces/api.interfaces';
 import { environment } from '../../environments/environment';
 
 /**
@@ -100,12 +91,50 @@ export class APIService {
             );
     }
 
-    public getProjects(custodians?: number[]): Observable<Project[]> {
-        const params: any = {};
-        if (custodians) {
-            params['custodians'] = custodians.toString();
-        }
+    public getPrograms(params = {}): Observable<Program[]> {
+        return this.httpClient.get(this.buildAbsoluteUrl('programs'), {
+                params: params
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
 
+    public getProgramById(id: number): Observable<Program> {
+        return this.httpClient.get(this.buildAbsoluteUrl('programs/' + id))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public createProgram(program: Program): Observable<Program> {
+        return this.httpClient.post(this.buildAbsoluteUrl('programs'), program,
+            {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public updateProgram(program: Program): Observable<Program> {
+        return this.httpClient.put(this.buildAbsoluteUrl('programs/' + program.id), program,
+            {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public deleteProgram(id: number): Observable<Program> {
+        return this.httpClient.delete(this.buildAbsoluteUrl('programs/' + id))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public getProjects(params = {}): Observable<Project[]> {
         return this.httpClient.get(this.buildAbsoluteUrl('projects'), {
                 params: params
             })
@@ -132,7 +161,7 @@ export class APIService {
     }
 
     public updateProject(project: Project): Observable<Project> {
-        return this.httpClient.patch(this.buildAbsoluteUrl('projects/' + project.id), project,
+        return this.httpClient.put(this.buildAbsoluteUrl('projects/' + project.id), project,
             {
                 headers: new HttpHeaders({'content-type': 'application/json'})
             })
