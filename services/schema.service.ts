@@ -98,7 +98,7 @@ export class SchemaService {
 
         return {
             key: field.name,
-            label: field.title ? field.title : field.name,
+            label: field.descriptor.title ? field.descriptor.title : field.name,
             description: field.description,
             format: field.format,
             type: type,
