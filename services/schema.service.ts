@@ -66,10 +66,7 @@ export class SchemaService {
         for (let i = 0, len = fields.length; i < len; i++) {
             const field: Field = fields[i];
 
-            // these fields not recognised as table schema field, so need to extract manually
             const fieldOptions = schema.descriptor.fields[i].options;
-            field.description = schema.descriptor.fields[i].description;
-            field.title = schema.descriptor.fields[i].title;
 
             if (SchemaService.isHiddenField(field)) {
                 fd.hiddenFields.push(SchemaService.createFieldDescriptorFromSchemaField(field));
@@ -96,10 +93,12 @@ export class SchemaService {
     private static createFieldDescriptorFromSchemaField(field: Field, fieldOptions?: object): FieldDescriptor {
         const type: string = SchemaService.schemaFieldTypeToFormFieldType(field);
 
+        console.log(field);
+
         return {
             key: field.name,
-            label: field.title ? field.title : field.name,
-            description: field.description,
+            label: field.descriptor.title ? field.descriptor.title : field.name,
+            description: field.descriptor.description,
             format: field.format,
             type: type,
             options: type === 'select' ? SchemaService.createOptions(field, fieldOptions) : null,
