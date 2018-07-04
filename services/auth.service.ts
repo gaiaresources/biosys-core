@@ -1,16 +1,51 @@
 import { Injectable } from '@angular/core';
-import { User } from '../interfaces/api.interfaces';
+
 import { Observable } from 'rxjs/Observable';
+import { map, mergeMap, tap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
+
+import { User } from '../interfaces/api.interfaces';
+import { APIService } from './api.service';
 
 @Injectable()
-export abstract class AuthService {
-    public abstract getAuthToken(): string;
+export class AuthService {
+    protected user: User;
 
-    public abstract getCurrentUser(): Observable<User>;
+    constructor(protected apiService: APIService) {
+    }
 
-    public abstract login(username: string, password: string): Observable<User>;
+    public getAuthToken(): string {
+        return localStorage.getItem('auth_token');
+    }
 
-    public abstract logout();
+    public getCurrentUser(): Observable<User> {
+        if (!this.user) {
+            return this.apiService.whoAmI().pipe(
+                tap((user: User) => this.user = user)
+            );
+        } else {
+            return of(this.user);
+        }
+    }
 
-    public abstract isLoggedIn(): boolean;
+    public login(username: string, password: string): Observable<User> {
+        return this.apiService.getAuthToken(username, password).pipe(
+            map(res => localStorage.setItem('auth_token', res.token)),
+            mergeMap(() => this.getCurrentUser())
+        );
+    }
+
+    public logout() {
+        this.user = null;
+        localStorage.removeItem('auth_token');
+    }
+
+    public isLoggedIn(): boolean {
+        if (this.apiService.receivedUnauthenticatedError) {
+            localStorage.removeItem('auth_token');
+            return false;
+        }
+
+        return !!this.getAuthToken();
+    }
 }
