@@ -18,6 +18,6 @@ export interface FieldDescriptor {
 }
 
 export interface FieldOption {
-    name: string;
+    text: string;
     value: string;
 }

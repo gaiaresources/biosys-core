@@ -93,8 +93,6 @@ export class SchemaService {
     private static createFieldDescriptorFromSchemaField(field: Field, fieldOptions?: object): FieldDescriptor {
         const type: string = SchemaService.schemaFieldTypeToFormFieldType(field);
 
-        console.log(field);
-
         return {
             key: field.name,
             label: field.descriptor.title ? field.descriptor.title : field.name,
@@ -110,14 +108,14 @@ export class SchemaService {
         const options: FieldOption[] = [];
 
         if (!fieldOptions || !fieldOptions.hasOwnProperty('enum') || !fieldOptions['enum'].hasOwnProperty('titles')) {
-            return field.constraints.enum.map(value => ({name: value, value: value}));
+            return field.constraints.enum.map(value => ({text: value, value: value}));
         } else {
             const enums: any[] = field.constraints.enum;
             const titles: string[] = fieldOptions['enum']['titles'];
 
             for (let i = 0, enumsLen = enums.length, titlesLen = titles.length; i < enumsLen; i++) {
                 options.push({
-                    name: i < titlesLen ? titles[i] : enums[i],
+                    text: i < titlesLen ? titles[i] : enums[i],
                     value: enums[i]
                 });
             }
