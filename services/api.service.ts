@@ -336,11 +336,11 @@ export class APIService {
             );
     }
 
-    public updateRecordPublished(id: number, published: boolean, strict = false): Observable<Record> {
+    public updateRecordValidated(id: number, validated: boolean, strict = false): Observable<Record> {
         // strict is evaluated to true on the server if the parameter is passed with any value
         const params = strict ? {strict: 'true'} : {};
 
-        return this.httpClient.patch(this.buildAbsoluteUrl('records/' + id), {published: published}, {
+        return this.httpClient.patch(this.buildAbsoluteUrl('records/' + id), {validated: validated}, {
                 params: params,
                 headers: new HttpHeaders({'content-type': 'application/json'})
             })
@@ -349,11 +349,11 @@ export class APIService {
             );
     }
 
-    public updateRecordConsumed(id: number, consumed: boolean, strict = false): Observable<Record> {
+    public updateRecordLocked(id: number, locked: boolean, strict = false): Observable<Record> {
         // strict is evaluated to true on the server if the parameter is passed with any value
         const params = strict ? {strict: 'true'} : {};
 
-        return this.httpClient.patch(this.buildAbsoluteUrl('records/' + id), {consumed: consumed}, {
+        return this.httpClient.patch(this.buildAbsoluteUrl('records/' + id), {locked: locked}, {
                 params: params,
                 headers: new HttpHeaders({'content-type': 'application/json'})
             })
