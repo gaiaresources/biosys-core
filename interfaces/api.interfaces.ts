@@ -76,8 +76,8 @@ export interface Record {
     last_modified?: string;
     created?: string;
     data?: { [key: string]: any } | null;
-    published?: boolean;
-    consumed?: boolean;
+    validated?: boolean;
+    locked?: boolean;
     datetime?: string;
     geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
     species_name?: string;
