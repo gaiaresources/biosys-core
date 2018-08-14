@@ -11,6 +11,8 @@ export class DataEngineerGuard implements CanActivate {
     }
 
     canActivate() {
+        // TODO: implement logic for determining if user is data engineer for specific program or project
+
         return this.authService.getCurrentUser().pipe(
             map((user: User) => user.is_admin || user.is_data_engineer)
         )
