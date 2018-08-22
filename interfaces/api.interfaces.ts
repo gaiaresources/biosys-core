@@ -1,7 +1,7 @@
 export interface APIError {
     status: number;
     statusText: string;
-    msg: any;
+    msg: object | string[] | string;
 }
 
 export interface User {

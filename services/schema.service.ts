@@ -4,9 +4,7 @@ import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms'
 
 import { Package, DataPackage, Schema, Field } from 'datapackage';
 
-import { Observable } from 'rxjs/Observable';
-import { fromPromise } from 'rxjs/observable/fromPromise';
-import { zip } from 'rxjs/observable/zip';
+import { Observable ,  from as fromPromise ,  zip } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { FieldDescriptor, FieldOption, FormDescriptor } from '../interfaces/form.interfaces';
