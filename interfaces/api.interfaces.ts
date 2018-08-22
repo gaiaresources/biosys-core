@@ -23,7 +23,7 @@ export interface Program {
     name?: string;
     code?: string;
     description?: string;
-    data_engineers?: User[] | null;
+    data_engineers?: number[] | null;
 }
 
 export interface Project {
