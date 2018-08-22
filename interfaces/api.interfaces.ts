@@ -100,9 +100,20 @@ export interface Media {
 }
 
 export interface Statistic {
-    projects: any;
-    datasets: any[];
-    records: any[];
+    projects: { total: number; };
+    datasets: {
+        total: number;
+        generic: { total: number; };
+        observation: { total: number; };
+        speciesObservation: { total: number; };
+    };
+    records: {
+        total: number;
+        generic: { total: number; };
+        observation: { total: number; };
+        speciesObservation: { total: number; };
+    };
+    sites: { total: number; };
 }
 
 export interface ModelChoice {
