@@ -123,19 +123,35 @@ export class SchemaService {
     }
 
     private static isDateField(field: Field): boolean {
-        return field.name.toLowerCase().indexOf('date') > -1;
+        if (typeof field === 'object') {
+            return field.name.toLowerCase().indexOf('date') > -1;
+        } else {
+            return false;
+        }
     }
 
     private static isLocationField(field: Field): boolean {
-        return SchemaService.LOCATION_FIELDS.indexOf(field.name.toLowerCase()) > -1;
+        if (typeof field === 'object') {
+            return SchemaService.LOCATION_FIELDS.indexOf(field.name.toLowerCase()) > -1;
+        } else {
+            return false;
+        }
     }
 
     private static isRequiredField(field: Field): boolean {
-        return 'constraints' in field && 'required' in field.constraints;
+        if (typeof field === 'object') {
+            return 'constraints' in field && 'required' in field.constraints;
+        } else {
+            return false;
+        }
     }
 
     private static isHiddenField(field: Field): boolean {
-        return 'constraints' in field && 'enum' in field.constraints && field.constraints.enum.length === 1;
+        if (typeof field === 'object') {
+            return 'constraints' in field && 'enum' in field.constraints && field.constraints.enum.length === 1;
+        } else {
+            return false;
+        }
     }
 
     constructor(private formBuilder: FormBuilder) {
@@ -154,8 +170,10 @@ export class SchemaService {
             map((dataPackage: DataPackage) => {
                 const group = {};
 
-                dataPackage.resources[resourceIndex].schema.fields.forEach((field: Field) =>
-                    group[field.name] = ['', SchemaService.constraintsToValidators(field.constraints)]);
+                dataPackage.resources[resourceIndex].schema.fields.forEach((field: Field) => {
+                    const validators: ValidatorFn[] = field.constraints ? SchemaService.constraintsToValidators(field.constraints) : [];
+                    group[field.name] = ['', validators];
+                });
 
                 return this.formBuilder.group(group);
             })
