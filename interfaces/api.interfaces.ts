@@ -91,6 +91,22 @@ export interface RecordResponse {
     results?: Record[];
 }
 
+export interface ProjectMedia {
+    id?: number;
+    project?: number;
+    file?: string;
+    created?: string;
+    last_modified?: string;
+}
+
+export interface DatasetMedia {
+    id?: number;
+    dataset?: number;
+    file?: string;
+    created?: string;
+    last_modified?: string;
+}
+
 export interface Media {
     id?: number;
     record?: number;
