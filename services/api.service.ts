@@ -3,7 +3,9 @@ import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
-import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media } from '../interfaces/api.interfaces';
+import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, RecordMedia, DatasetMedia,
+    ProjectMedia
+} from '../interfaces/api.interfaces';
 import { environment } from '../../environments/environment';
 
 /**
@@ -177,6 +179,52 @@ export class APIService {
             );
     }
 
+    public getProjectMedia(projectId: number): Observable<ProjectMedia[]> {
+        const params = {
+            project: projectId.toString()
+        };
+
+        return this.httpClient.get<ProjectMedia[]>(this.buildAbsoluteUrl('project-media'), {
+                params: params
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public uploadProjectMediaBinary(projectId: number, file: File): Observable<ProjectMedia> {
+        const formData: FormData = new FormData();
+
+        formData.append('project', projectId.toString());
+        formData.append('file', file, file.name);
+
+        // the content-type will be inferred from formData
+        return this.httpClient.post(this.buildAbsoluteUrl('project-media'), formData)
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public uploadProjectMediaBase64(projectId: number, file: string): Observable<ProjectMedia> {
+        // the content-type will be inferred from formData
+        return this.httpClient.post(this.buildAbsoluteUrl('project-media'), {
+                project: projectId,
+                file: file
+            }, {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public deleteProjectMedia(projectId: number, projectMediaId: number): Observable<ProjectMedia> {
+        return this.httpClient.delete(this.buildAbsoluteUrl(`project-media/${projectMediaId}`))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
     public getAllSites(): Observable<Site[]> {
         return this.httpClient.get<Site[]>(this.buildAbsoluteUrl('sites'))
             .pipe(
@@ -284,6 +332,53 @@ export class APIService {
 
     public deleteDataset(id: number): Observable<Dataset> {
         return this.httpClient.delete<Dataset>(this.buildAbsoluteUrl('dataset/' + id))
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+
+    public getDatasetMedia(datasetId: number): Observable<DatasetMedia[]> {
+        const params = {
+            dataset: datasetId.toString()
+        };
+
+        return this.httpClient.get<DatasetMedia[]>(this.buildAbsoluteUrl('dataset-media'), {
+                params: params
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public uploadDatasetMediaBinary(datasetId: number, file: File): Observable<DatasetMedia> {
+        const formData: FormData = new FormData();
+
+        formData.append('dataset', datasetId.toString());
+        formData.append('file', file, file.name);
+
+        // the content-type will be inferred from formData
+        return this.httpClient.post(this.buildAbsoluteUrl('dataset-media'), formData)
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public uploadDatasetMediaBase64(datasetId: number, file: string): Observable<DatasetMedia> {
+        // the content-type will be inferred from formData
+        return this.httpClient.post(this.buildAbsoluteUrl('dataset-media'), {
+            dataset: datasetId,
+            file: file
+        }, {
+            headers: new HttpHeaders({'content-type': 'application/json'})
+        })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public deleteDatasetMedia(datasetId: number, datasetMediaId: number): Observable<ProjectMedia> {
+        return this.httpClient.delete(this.buildAbsoluteUrl(`dataset-media/${datasetMediaId}`))
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
@@ -406,12 +501,12 @@ export class APIService {
             );
     }
 
-    public getRecordMedia(recordId: number): Observable<Media[]> {
+    public getRecordMedia(recordId: number): Observable<RecordMedia[]> {
         const params = {
             record: recordId.toString()
         };
 
-        return this.httpClient.get<Media[]>(this.buildAbsoluteUrl('media'), {
+        return this.httpClient.get<RecordMedia[]>(this.buildAbsoluteUrl('media'), {
                 params: params
             })
             .pipe(
@@ -419,7 +514,7 @@ export class APIService {
             );
     }
 
-    public uploadRecordMediaBinary(recordId: number, file: File): Observable<Media> {
+    public uploadRecordMediaBinary(recordId: number, file: File): Observable<RecordMedia> {
         const formData: FormData = new FormData();
 
         formData.append('record', recordId.toString());
@@ -432,7 +527,7 @@ export class APIService {
             );
     }
 
-    public uploadRecordMediaBase64(recordId: number, file: string): Observable<Media> {
+    public uploadRecordMediaBase64(recordId: number, file: string): Observable<RecordMedia> {
         // the content-type will be inferred from formData
         return this.httpClient.post(this.buildAbsoluteUrl('media'), {
                 record: recordId,

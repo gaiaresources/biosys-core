@@ -91,28 +91,24 @@ export interface RecordResponse {
     results?: Record[];
 }
 
-export interface ProjectMedia {
-    id?: number;
-    project?: number;
-    file?: string;
-    created?: string;
-    last_modified?: string;
-}
-
-export interface DatasetMedia {
-    id?: number;
-    dataset?: number;
-    file?: string;
-    created?: string;
-    last_modified?: string;
-}
-
 export interface Media {
     id?: number;
-    record?: number;
     file?: string;
     created?: string;
     last_modified?: string;
+    filesize?: number;
+}
+
+export interface ProjectMedia extends Media {
+    project?: number;
+}
+
+export interface DatasetMedia extends Media {
+    dataset?: number;
+}
+
+export interface RecordMedia extends Media {
+    record?: number;
 }
 
 export interface Statistic {
