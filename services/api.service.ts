@@ -57,12 +57,48 @@ export class APIService {
         this.baseUrl = environment.server + environment.apiExtension;
     }
 
-    public getAuthToken(username: string, password: string): Observable<any> {
+    public getAuthToken(username: string, password: string): Observable<object> {
         return this.httpClient.post(this.buildAbsoluteUrl('auth-token'), {
                 username: username,
                 password: password
             },
             {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public changePassword(oldPassword: string, newPassword: string): Observable<object> {
+        return this.httpClient.post(this.buildAbsoluteUrl('password'), {
+                current_password: oldPassword,
+                new_password: newPassword
+            }, {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public forgotPassword(email: string): Observable<object> {
+        return this.httpClient.post(this.buildAbsoluteUrl('password/reset'), {
+                email: email
+            }, {
+                headers: new HttpHeaders({'content-type': 'application/json'})
+            })
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
+    }
+
+    public resetPassword(uid: string, token: string, newPassword: string): Observable<object> {
+        return this.httpClient.post(this.buildAbsoluteUrl('password/reset/confirm'), {
+                uid: uid,
+                token: token,
+                new_password: newPassword
+            }, {
                 headers: new HttpHeaders({'content-type': 'application/json'})
             })
             .pipe(
