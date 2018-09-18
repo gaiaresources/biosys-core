@@ -651,7 +651,7 @@ export class APIService {
     }
 
     public exportRecords(startDate?: Date, endDate?: Date, speciesName?: string, datasetId?: number,
-                         format: string = 'csv') {
+                         format: string = 'csv'): Observable<Blob> {
         const params = {
             output: format
         };
