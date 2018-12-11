@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media } from '../interfaces/api.interfaces';
-import { environment } from '../../environments/environment';
+import { environment } from '~/environments/environment';
 
 /**
  * This class provides the Biosys API service.
@@ -111,7 +111,7 @@ export class APIService {
     }
 
     public getUsers(params = {}): Observable<User[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('users'), {
+        return this.httpClient.get<User[]>(this.buildAbsoluteUrl('users'), {
                 params: params
             })
             .pipe(
@@ -127,7 +127,7 @@ export class APIService {
     }
 
     public getPrograms(params = {}): Observable<Program[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('programs'), {
+        return this.httpClient.get<Program[]>(this.buildAbsoluteUrl('programs'), {
                 params: params
             })
             .pipe(
@@ -170,7 +170,7 @@ export class APIService {
     }
 
     public getProjects(params = {}): Observable<Project[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('projects'), {
+        return this.httpClient.get<Project[]>(this.buildAbsoluteUrl('projects'), {
                 params: params
             })
             .pipe(
@@ -213,14 +213,14 @@ export class APIService {
     }
 
     public getAllSites(): Observable<Site[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('sites'))
+        return this.httpClient.get<Site[]>(this.buildAbsoluteUrl('sites'))
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
     }
 
     public getAllSitesForProjectID(id: number): Observable<Site[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('projects/' + id + '/sites'))
+        return this.httpClient.get<Site[]>(this.buildAbsoluteUrl('projects/' + id + '/sites'))
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
@@ -262,7 +262,7 @@ export class APIService {
 
     public deleteSites(projectId: number, siteIds: number[]): Observable<void> {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
-        return this.httpClient.request('DELETE', this.buildAbsoluteUrl('projects/' + projectId + '/sites/'),
+        return this.httpClient.request<void>('DELETE', this.buildAbsoluteUrl('projects/' + projectId + '/sites/'),
             {
                 headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: siteIds
@@ -273,7 +273,7 @@ export class APIService {
     }
 
     public getDatasets(params = {}): Observable<Dataset[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('datasets'), {
+        return this.httpClient.get<Dataset[]>(this.buildAbsoluteUrl('datasets'), {
                 params: params
             })
             .pipe(
@@ -282,7 +282,7 @@ export class APIService {
     }
 
     public getAllDatasetsForProjectID(id: number): Observable<Dataset[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('datasets'), {
+        return this.httpClient.get<Dataset[]>(this.buildAbsoluteUrl('datasets'), {
                 params: {project: String(id)}
             })
             .pipe(
@@ -330,7 +330,7 @@ export class APIService {
     }
 
     public getRecords(params = {}): Observable<Record[]> {
-        return this.httpClient.get(this.buildAbsoluteUrl('records'), {
+        return this.httpClient.get<Record[]>(this.buildAbsoluteUrl('records'), {
                 params: params
             })
             .pipe(
@@ -419,7 +419,7 @@ export class APIService {
 
     public deleteRecords(datasetId: number, recordIds: number[]): Observable<void> {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
-        return this.httpClient.request('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
+        return this.httpClient.request<void>('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
             {
                 headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: recordIds
@@ -431,7 +431,7 @@ export class APIService {
 
     public deleteAllRecords(datasetId: number): Observable<void> {
         // httpClient.delete method doesn't accept a body argument, so use request as a work-around
-        return this.httpClient.request('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
+        return this.httpClient.request<void>('DELETE', this.buildAbsoluteUrl('datasets/' + datasetId + '/records/'),
             {
                 headers: new HttpHeaders({'content-type': 'application/json'}),
                 body: JSON.stringify('all')
@@ -446,7 +446,7 @@ export class APIService {
             record: recordId.toString()
         };
 
-        return this.httpClient.get(this.buildAbsoluteUrl('media'), {
+        return this.httpClient.get<Media[]>(this.buildAbsoluteUrl('media'), {
                 params: params
             })
             .pipe(
@@ -481,7 +481,7 @@ export class APIService {
     }
 
     public getStatistics(): Observable<Statistic> {
-        return this.httpClient.get(this.buildAbsoluteUrl('statistics'), {})
+        return this.httpClient.get<Statistic>(this.buildAbsoluteUrl('statistics'), {})
             .pipe(
                 catchError((err, caught) => this.handleError(err, caught))
             );
