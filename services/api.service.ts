@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 import { map, catchError } from 'rxjs/operators';
 import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media } from '../interfaces/api.interfaces';
 import { environment } from '~/environments/environment';
@@ -23,6 +23,7 @@ export class APIService {
     }
 
     private handleError(error: any, caught: Observable<any>) {
+        console.log('handleError', error);
         const apiError: APIError = {
             status: error.status,
             statusText: error.statusText,
@@ -42,7 +43,8 @@ export class APIService {
     }
 
     private buildAbsoluteUrl(path: string, appendEndSlash: boolean = true) {
-        return this.baseUrl + ((path && !path.endsWith('/')) && appendEndSlash ? path + '/' : path);
+        const url = this.baseUrl + ((path && !path.endsWith('/')) && appendEndSlash ? path + '/' : path);
+        return url;
     }
 
     /**

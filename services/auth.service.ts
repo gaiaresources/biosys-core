@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs/Rx';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
+import { of } from 'rxjs';
 
 import { User } from '../interfaces/api.interfaces';
 import { APIService } from './api.service';
+
+let localStorage = require ('nativescript-localstorage');
 
 @Injectable()
 export class AuthService {
