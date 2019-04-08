@@ -4,8 +4,15 @@
     "license": "MIT",
     "private": true,
     "dependencies": {
-        "@types/geojson": "^7946.0.3",
+        "@types/geojson": "^7946.0.7",
         "datapackage": "^1.0.6",
         "tableschema": "^1.9.1"
+    },
+    "browser": {
+        "fs": false,
+        "os": false,
+        "path": false,
+        "crypto": false,
+        "stream": false
     }
 }
