@@ -651,7 +651,7 @@ export class APIService {
     }
 
     public exportRecords(startDate?: Date, endDate?: Date, speciesName?: string, datasetId?: number,
-                         format: string = 'csv'): Observable<Blob> {
+                         format: string = 'csv', validatedOnly?: boolean, includeLocked?: boolean): Observable<Blob> {
         const params = {
             output: format
         };
@@ -670,6 +670,15 @@ export class APIService {
 
         if (datasetId) {
             params['dataset__id'] = datasetId;
+        }
+
+        if (validatedOnly) {
+            params['validated'] = true;
+        }
+
+        // if users dont specify to include locked records, only include unlocked records
+        if (!includeLocked) {
+            params['locked'] = false;
         }
 
         return this.httpClient.get(this.buildAbsoluteUrl('records/'), {
