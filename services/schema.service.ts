@@ -142,7 +142,7 @@ export class SchemaService {
 
     private static isRequiredField(field: Field): boolean {
         if (typeof field === 'object') {
-            return 'constraints' in field && 'required' in field.constraints;
+            return field.required;
         } else {
             return false;
         }
