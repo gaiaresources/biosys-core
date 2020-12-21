@@ -1,3 +1,5 @@
+import * as GeoJSON from 'geojson';
+
 export interface APIError {
     status: number;
     statusText: string;

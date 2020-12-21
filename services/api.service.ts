@@ -1,8 +1,9 @@
-
 import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, catchError } from 'rxjs/operators';
+import * as GeoJSON from 'geojson';
+
 import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, RecordMedia, DatasetMedia,
     ProjectMedia
 } from '../interfaces/api.interfaces';
@@ -50,7 +51,7 @@ export class APIService {
 
     /**
      * Creates a new APIService with the injected Http.
-     * @param {Http} httpClient - The injected Http.
+     * @param {HttpClient} httpClient - The injected Http client.
      * @constructor
      */
     constructor(private httpClient: HttpClient) {

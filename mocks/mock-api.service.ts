@@ -1,8 +1,10 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+
+import { throwError as observableThrowError, Observable, Subscriber } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
+import * as GeoJSON from 'geojson';
+
 import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, RecordMedia, DatasetMedia,
     ProjectMedia
 } from '../interfaces/api.interfaces';
@@ -50,7 +52,7 @@ export class MockAPIService {
 
     /**
      * Creates a new APIService with the injected Http.
-     * @param {Http} httpClient - The injected Http.
+     * @param {HttpClient} httpClient - The injected Http client.
      * @constructor
      */
     constructor(private httpClient: HttpClient) {
@@ -58,19 +60,21 @@ export class MockAPIService {
     }
 
     public getAuthToken(username: string, password: string): Observable<object> {
-        return Observable.create((observer) => {
+        return new Observable((observer: Subscriber<any>) => {
             if (username === 'user1' && password === 't35tP@55w0rd') {
                 observer.next({
                     token: '143f1a51147ddfaab533fa09af6d8d7742e575ag'
                 });
             } else {
-                observer.error(this.handleError(new HttpErrorResponse({
+                observer.error(new HttpErrorResponse({
                     error: 'Incorrect email / password',
                     statusText: 'Authentication errror',
                     status: 401
-                }), observer));
+                }));
             }
-        });
+        }).pipe(
+            catchError((err, caught) => this.handleError(err, caught))
+        );
     }
 
     public changePassword(oldPassword: string, newPassword: string): Observable<object> {
