@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { APIError, User, Program, Project, Dataset, Site, Record, Statistic, ModelChoice, Media } from '../interfaces/api.interfaces';
 import { environment } from '../../environments/environment';
+import {StorageService} from "../../shared/services/storage.service";
 
 /**
  * This class provides the Biosys API service.
@@ -50,7 +51,7 @@ export class APIService {
      * @param {Http} httpClient - The injected Http.
      * @constructor
      */
-    constructor(private httpClient: HttpClient) {
+    constructor(private httpClient: HttpClient, private storageService: StorageService) {
         this.baseUrl = environment.server + environment.apiExtension;
     }
 
@@ -455,29 +456,33 @@ export class APIService {
     }
 
     public uploadRecordMediaBinary(recordId: number, file: File): Observable<Media> {
-        const formData: FormData = new FormData();
-
-        formData.append('record', recordId.toString());
-        formData.append('file', file, file.name);
-
-        // the content-type will be inferred from formData
-        return this.httpClient.post(this.buildAbsoluteUrl('media'), formData)
-            .pipe(
-                catchError((err, caught) => this.handleError(err, caught))
-            );
+      console.log("Wrong");
+      return this.uploadRecordMediaBase64("fooboo", 0,  file.name);
+        // const formData: FormData = new FormData();
+        //
+        // formData.append('record', recordId.toString());
+        // formData.append('file', file, file.name);
+        //
+        // // the content-type will be inferred from formData
+        // return this.httpClient.post(this.buildAbsoluteUrl('media'), formData)
+        //     .pipe(
+        //         catchError((err, caught) => this.handleError(err, caught))
+        //     );
     }
 
-    public uploadRecordMediaBase64(recordId: number, file: string): Observable<Media> {
-        // the content-type will be inferred from formData
-        return this.httpClient.post(this.buildAbsoluteUrl('media'), {
-                record: recordId,
-                file: file
-            }, {
-                headers: new HttpHeaders({'content-type': 'application/json'})
-            })
-            .pipe(
-                catchError((err, caught) => this.handleError(err, caught))
-            );
+    public uploadRecordMediaBase64(recordId: string, record: number, file: string): Observable<Media> {
+      console.log('upload', recordId, record)
+      let body = {
+        record: record,
+        file: file
+      };
+      console.log('upload-body', body);
+      return this.httpClient.post(this.buildAbsoluteUrl('media'), body, {
+        headers: new HttpHeaders({'content-type': 'application/json'})
+      })
+        .pipe(
+          catchError((err, caught) => this.handleError(err, caught))
+        );
     }
 
     public getStatistics(): Observable<Statistic> {
