@@ -456,18 +456,16 @@ export class APIService {
     }
 
     public uploadRecordMediaBinary(recordId: number, file: File): Observable<Media> {
-      console.log("Wrong");
-      return this.uploadRecordMediaBase64("fooboo", 0,  file.name);
-        // const formData: FormData = new FormData();
-        //
-        // formData.append('record', recordId.toString());
-        // formData.append('file', file, file.name);
-        //
-        // // the content-type will be inferred from formData
-        // return this.httpClient.post(this.buildAbsoluteUrl('media'), formData)
-        //     .pipe(
-        //         catchError((err, caught) => this.handleError(err, caught))
-        //     );
+        const formData: FormData = new FormData();
+
+        formData.append('record', recordId.toString());
+        formData.append('file', file, file.name);
+
+        // the content-type will be inferred from formData
+        return this.httpClient.post(this.buildAbsoluteUrl('media'), formData)
+            .pipe(
+                catchError((err, caught) => this.handleError(err, caught))
+            );
     }
 
     public uploadRecordMediaBase64(recordId: string, record: number, file: string): Observable<Media> {
