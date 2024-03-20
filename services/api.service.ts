@@ -51,7 +51,7 @@ export class APIService {
 
     /**
      * Creates a new APIService with the injected Http.
-     * @param {HttpClient} httpClient - The injected Http client.
+     * @param {HttpClient} httpClient - The injected Http Client.
      * @constructor
      */
     constructor(private httpClient: HttpClient) {
