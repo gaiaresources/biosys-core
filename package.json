@@ -4,7 +4,7 @@
     "license": "MIT",
     "private": true,
     "dependencies": {
-        "@types/geojson": "^7946.0.3",
+        "@types/geojson": "^7946.0.4",
         "datapackage": "^1.0.6",
         "tableschema": "^1.9.1"
     }

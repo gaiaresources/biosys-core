@@ -1,6 +1,7 @@
-import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+
+import { throwError as observableThrowError, Observable, Subscriber } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import * as GeoJSON from 'geojson';
 
@@ -13,7 +14,7 @@ import { environment } from '../../environments/environment';
  * This class provides the Biosys API service.
  */
 @Injectable()
-export class APIService {
+export class MockAPIService {
     private readonly baseUrl: string;
     private _receivedUnauthenticatedError = false;
 
@@ -51,7 +52,7 @@ export class APIService {
 
     /**
      * Creates a new APIService with the injected Http.
-     * @param {HttpClient} httpClient - The injected Http Client.
+     * @param {HttpClient} httpClient - The injected Http client.
      * @constructor
      */
     constructor(private httpClient: HttpClient) {
@@ -59,16 +60,21 @@ export class APIService {
     }
 
     public getAuthToken(username: string, password: string): Observable<object> {
-        return this.httpClient.post(this.buildAbsoluteUrl('auth-token'), {
-                username: username,
-                password: password
-            },
-            {
-                headers: new HttpHeaders({'content-type': 'application/json'})
-            })
-            .pipe(
-                catchError((err, caught) => this.handleError(err, caught))
-            );
+        return new Observable((observer: Subscriber<any>) => {
+            if (username === 'user1' && password === 't35tP@55w0rd') {
+                observer.next({
+                    token: '143f1a51147ddfaab533fa09af6d8d7742e575ag'
+                });
+            } else {
+                observer.error(new HttpErrorResponse({
+                    error: 'Incorrect email / password',
+                    statusText: 'Authentication errror',
+                    status: 401
+                }));
+            }
+        }).pipe(
+            catchError((err, caught) => this.handleError(err, caught))
+        );
     }
 
     public changePassword(oldPassword: string, newPassword: string): Observable<object> {
@@ -652,7 +658,7 @@ export class APIService {
     }
 
     public exportRecords(startDate?: Date, endDate?: Date, speciesName?: string, datasetId?: number,
-                         format: string = 'csv', validatedOnly?: boolean, includeLocked?: boolean): Observable<Blob> {
+                         format: string = 'csv') {
         const params = {
             output: format
         };
@@ -671,15 +677,6 @@ export class APIService {
 
         if (datasetId) {
             params['dataset__id'] = datasetId;
-        }
-
-        if (validatedOnly) {
-            params['validated'] = true;
-        }
-
-        // if users dont specify to include locked records, only include unlocked records
-        if (!includeLocked) {
-            params['locked'] = false;
         }
 
         return this.httpClient.get(this.buildAbsoluteUrl('records/'), {

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  of } from 'rxjs';
 import { map, mergeMap, tap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 import { User } from '../interfaces/api.interfaces';
 import { APIService } from './api.service';

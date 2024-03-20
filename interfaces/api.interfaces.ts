@@ -1,7 +1,9 @@
+import * as GeoJSON from 'geojson';
+
 export interface APIError {
     status: number;
     statusText: string;
-    msg: any;
+    msg: object | string[] | string;
 }
 
 export interface User {
@@ -35,8 +37,9 @@ export interface Project {
     datum?: number | string | null;
     attributes?: { [key: string]: string } | null;
     description?: string;
-    geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
+    geometry?: GeoJSON.Geometry | null;
     centroid?: GeoJSON.Point | null;
+    extent?: GeoJSON.BBox | null;
     site_data_package?: {} | null;
     custodians?: number[];
     dataset_count?: number;
@@ -50,7 +53,7 @@ export interface Site {
     name?: string;
     parent_site?: number | null;
     project?: number;
-    geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
+    geometry?: GeoJSON.Geometry | null;
     centroid?: GeoJSON.Point | null;
     description?: string;
     attributes?: { [key: string]: string } | null;
@@ -61,6 +64,7 @@ export interface Dataset {
     name?: string;
     code?: string;
     type?: string;
+    extent?: GeoJSON.BBox;
     project?: number;
     data_package?: any;
     record_count?: number;
@@ -79,7 +83,7 @@ export interface Record {
     validated?: boolean;
     locked?: boolean;
     datetime?: string;
-    geometry?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.MultiLineString | GeoJSON.Polygon | GeoJSON.MultiPolygon | null;
+    geometry?: GeoJSON.Geometry | null;
     species_name?: string;
     name_id?: number;
     parent?: number;
@@ -93,16 +97,39 @@ export interface RecordResponse {
 
 export interface Media {
     id?: number;
-    record?: number;
     file?: string;
     created?: string;
     last_modified?: string;
+    filesize?: number;
+}
+
+export interface ProjectMedia extends Media {
+    project?: number;
+}
+
+export interface DatasetMedia extends Media {
+    dataset?: number;
+}
+
+export interface RecordMedia extends Media {
+    record?: number;
 }
 
 export interface Statistic {
-    projects: any;
-    datasets: any[];
-    records: any[];
+    projects: { total: number; };
+    datasets: {
+        total: number;
+        generic: { total: number; };
+        observation: { total: number; };
+        speciesObservation: { total: number; };
+    };
+    records: {
+        total: number;
+        generic: { total: number; };
+        observation: { total: number; };
+        speciesObservation: { total: number; };
+    };
+    sites: { total: number; };
 }
 
 export interface ModelChoice {
