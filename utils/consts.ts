@@ -14,4 +14,6 @@ export let ISO_ANGULAR_DATE_FORMAT = 'yyyy-MM-dd';
 
 export let ISO_MOMENT_DATE_FORMAT = 'YYYY-MM-DD';
 
+export let ISO_MOMENT_DATE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
+
 export let AMBIGUOUS_DATE_PATTERN: RegExp = /^(\d{1,2})[-,\/](\d{1,2})[-,\/](\d{4})$/;

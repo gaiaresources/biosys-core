@@ -1,4 +1,9 @@
-import { ANY_ANGULAR_DATE_FORMAT, ANY_MOMENT_DATE_FORMAT, ISO_ANGULAR_DATE_FORMAT, ISO_MOMENT_DATE_FORMAT } from './consts';
+import {
+    ANY_ANGULAR_DATE_FORMAT,
+    ANY_MOMENT_DATE_FORMAT,
+    ISO_ANGULAR_DATE_FORMAT,
+    ISO_MOMENT_DATE_FORMAT, ISO_MOMENT_DATE_TIME_FORMAT
+} from './consts';
 
 import { APIError, User } from '../interfaces/api.interfaces';
 
@@ -61,4 +66,12 @@ export function formatAPIError(error: APIError): object {
 
 export function formatUserFullName(user: User): string {
     return `${user.first_name} ${user.last_name}`.trim() || `${user.username}`.trim();
+}
+
+export function findDateTimeFormat(pythonDateFormat: string ) {
+    if (!pythonDateFormat || pythonDateFormat === 'any') {
+        return [ANY_MOMENT_DATE_FORMAT, ISO_MOMENT_DATE_TIME_FORMAT];
+    } else if (pythonDateFormat === 'default') {
+        return [ISO_MOMENT_DATE_FORMAT, ISO_MOMENT_DATE_TIME_FORMAT];
+    }
 }
