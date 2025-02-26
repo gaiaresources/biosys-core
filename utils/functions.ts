@@ -2,7 +2,8 @@ import {
     ANY_ANGULAR_DATE_FORMAT,
     ANY_MOMENT_DATE_FORMAT,
     ISO_ANGULAR_DATE_FORMAT,
-    ISO_MOMENT_DATE_FORMAT, ISO_MOMENT_DATE_TIME_FORMAT
+    ISO_MOMENT_DATE_FORMAT,
+    ISO_MOMENT_DATE_TIME_FORMAT
 } from './consts';
 
 import { APIError, User } from '../interfaces/api.interfaces';
